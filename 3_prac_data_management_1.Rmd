@@ -2,3 +2,16 @@
 title: "Practical Data Management"
 ---
 
+```{r, message=FALSE, echo=FALSE}
+library(knitr)
+opts_chunk$set(collapse = TRUE)
+```
+
+
+
+
+
+
+
+
+
