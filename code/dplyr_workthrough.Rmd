@@ -1,5 +1,5 @@
 ---
-title: "dplyr Practical "
+title: 'dplyr Practical '
 ---
 
 ```{r, message=FALSE, echo=FALSE}
@@ -12,6 +12,7 @@ opts_chunk$set(collapse = TRUE)
 library("dplyr")
 library("tidyr")
 library("ggplot2")
+library("readr")
 ```
 
 ## Overview
@@ -26,12 +27,12 @@ For this dataset, no drug resistance for that class is coded as 0 and resistance
 
 Load database results for patients in study.
 ```{r}
-db = read_csv("datasets/DB_results.csv")
+db = read_csv("../datasets/DB_results.csv")
 ```
 
 Load table with all the sequences for the clinic.
 ```{r}
-seqs = read_csv("datasets/All_sequences.csv")
+seqs = read_csv("../datasets/All_sequences.csv")
 ```
 
 ## Looking at our data
