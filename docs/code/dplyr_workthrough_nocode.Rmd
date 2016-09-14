@@ -27,12 +27,12 @@ For this dataset, no drug resistance for that class is coded as 0 and resistance
 
 Load database results for patients in study.
 ```{r}
-db = read_csv("../datasets/DB_results.csv")
+
 ```
 
 Load table with all the sequences for the clinic.
 ```{r}
-seqs = read_csv("../datasets/All_sequences.csv")
+
 ```
 
 ## Looking at our data
@@ -40,8 +40,7 @@ seqs = read_csv("../datasets/All_sequences.csv")
 What did we just load?!
 
 ```{r}
-glimpse(db)
-glimpse(seqs)
+
 ```
 
 Is this tidy data? Why or why not?
@@ -52,31 +51,19 @@ Is this tidy data? Why or why not?
 To do our analysis we need to combined the information from the two tables. To do this we'll use a join operation.  Here we use a left join which will add the columns from the sequences table to the db table only where there is a match base on a 'key' column. We'll let the `left_join()` function decide which columns to use as keys, based on column names
 
 ```{r}
-all = left_join(db, seqs)
+
 ```
 
 
 ### Clean up column names
 
 ```{r}
-all = all %>%
-	rename(Pat_ID = PATID,
-				 First_positive_test = First_pos_test,
-				 Geno_ID = ENUM,
-				 Geno_date = DRAWN_DATE,
-				 Location = LOCATION,
-				 Sequence = STRING)
-	
 
 ```
 
 And we don't want the `TESTCODE` column, let's drop it
 ```{r}
-all = all %>% dplyr::select(-TESTCODE)
 
-all[, 1:8]
-all %>% dplyr::select(-Sequence)
-all[, -9]
 ```
 
 ### Tidy it
