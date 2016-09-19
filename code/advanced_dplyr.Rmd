@@ -1,10 +1,12 @@
 ---
 title: "Advanced Dplyr"
+output: pdf_document
 ---
 
 ```{r, message=FALSE, echo=FALSE}
 library(knitr)
-opts_chunk$set(collapse = TRUE)
+opts_chunk$set(collapse = TRUE, message = FALSE, results = 'hide')
+options("readr.num_columns" = 0)
 ```
 
 

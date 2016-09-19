@@ -83,7 +83,7 @@ all[, -9]
 
 Finally let's get our tidy data
 ```{r}
-
+final = all %>% gather(Drug, Resistance, NRTI, NNRTI, PI)
 ```
 
 Note that I didn't want intermediate copies of the data here so I've simply keep using the same object name to overwrite the previous one.  Sometimes in your own analysis you may want to keep certain intermediate copies.
@@ -93,7 +93,9 @@ Note that I didn't want intermediate copies of the data here so I've simply keep
 
 First we want to calculate the sum of the resistance for all three drugs for eacch genotype results
 ```{r}
-
+meta = final %>% 
+	group_by(Geno_ID, Pat_ID) %>% 
+	summarise(sum_resistance = sum(Resistance))
 ```
 
 Currently, HIV is not cured by the ARV drugs, only suppressed in the body. Therefore patients can acumulate resistance over time.
@@ -103,17 +105,32 @@ many variants in the population of that patient so we often assume that resistan
 categorize patients by their maximum resistance score ever (i.e. cumulative resistance).
 
 ```{r}
-
+meta = meta %>% 
+	group_by(Pat_ID) %>% 
+	summarise(max_res = max(sum_resistance))
 ```
 
 
 Count the patients in each category
 ```{r}
+ccr_counts = meta %>% 
+	group_by(max_res) %>% 
+	summarise(freq = length(max_res))
+```
 
+```{r}
+meta %>% count(max_res)
 ```
 
 Plot the results in a boxplot
 ```{r}
+ccr_counts %>% 
+	ggplot(aes(x = factor(max_res), y = freq)) +
+	geom_boxplot() +
+	theme_bw() +
+	labs(x = "Cumulative class resistance/patient",
+			 y = "Frequency of tests",
+			 title = "Number of genotypes/patient by cumulative class resistance")
 
 ```
 

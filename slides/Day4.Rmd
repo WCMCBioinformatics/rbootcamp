@@ -1,0 +1,151 @@
+---
+title: "Day 4 - Graphics"
+date: "September 19, 2016"
+output: 
+ revealjs::revealjs_presentation:
+  theme: moon
+  incremental: true
+---
+
+```{r, message=FALSE, echo=FALSE}
+library(knitr)
+opts_chunk$set(collapse = FALSE)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(ggfortify)
+library(pheatmap)
+theme_set(theme_bw())
+```
+
+
+## Overview  
+
+- Effective visualizations
+- Grammar of graphics
+- ggplot practical
+
+## Effective visualizations
+
+- Why do we plot data?
+- What makes a good plot?
+
+## Plot types
+
+-----  
+
+### Scatter plot
+
+```{r, echo=FALSE}
+ggplot(mtcars, aes(wt, mpg)) + geom_point() +
+	labs(x = "Weight (1000 lbs)", y = "Miles/(US) gallon", caption = "Figure 1. Fuel efficiency decreases with increased vehicle weight")
+```
+
+
+-----  
+
+### Bar chart
+
+```{r, echo=FALSE}
+ggplot(mpg, aes(class)) + geom_bar() + labs(x = "Vehicle Class")
+```
+
+
+-----  
+
+### Histogram
+
+```{r, echo=FALSE, message=FALSE}
+ggplot(diamonds, aes(price)) + geom_histogram() + labs(x = "Diamond Price ($US)", title = "Summary of diamond prices")
+```
+
+
+------  
+
+### Boxplot
+
+```{r, echo=FALSE}
+ggplot(chickwts, aes(feed, weight)) + geom_boxplot() + 
+	labs(x = "Feed Type", y = "Weight (g)", title = "Effect of feed type on chick weight")
+```
+
+-----  
+
+### Line plots
+```{r, echo=FALSE}
+
+DNase %>% group_by(conc) %>% summarise(mean = mean(density), sd = sd(density)) %>% 
+	ggplot(aes(conc, mean)) + 
+	geom_errorbar(aes(ymax = mean + sd, ymin = mean - sd)) + 
+	geom_point() + geom_line() +
+	labs(x = "DNase Concentration (mg/mL)", y = "Mean optical density")
+
+```
+
+-----  
+
+### Time series
+```{r, echo=FALSE}
+autoplot(lynx) + labs(x = "Year", y = "Number of lynx trappings", title = "Annual Canadian Lynx trappings")
+```
+
+
+-----  
+
+### Heatmap
+
+```{r, echo=FALSE}
+mat = matrix(rnorm(1:100), nrow = 20)
+pheatmap(mat)
+```
+
+
+
+## Good Visualizations 
+
+- tell a story
+- are easy to understand
+- are simple
+- contain all the information need to interpret the plot
+
+
+## Tips
+
+- Think about what you are trying to convey
+- Don't include a figure because it looks "cool"
+- Ask yourself if the figure is as simple as it could be
+- Use colours but think about color blindness
+- Don't use more than 10 - 12 colours to distinguish groups
+- Sometimes a table is better
+
+----- 
+
+- Don't use pie charts
+- Don't use stacked bar charts
+- Use facet panels to reduce clutter
+- Avoid overplotting
+
+-----
+
+See the book, _The Visual Display of Quantitative Information_ by Edward Tufte for more information.
+
+
+## Grammar of Graphics
+
+- A vocabulary to descibe how to build a statistical graphic.  
+
+- Plot elements are well defined and by combining them using a set of rules we can create a wide variety of complex statistical graphics.
+
+- We build graphics like we build sentences and paragraphs.
+
+
+## More info
+
+ggplot2 [book](https://www.amazon.ca/ggplot2-Elegant-Graphics-Data-Analysis/dp/331924275X/ref=sr_1_1?ie=UTF8&qid=1474233790&sr=8-1&keywords=elegant+graphics+for+data+analysis)
+
+[Cookbook for R](http://www.cookbook-r.com/Graphs/)  
+
+ggplot2 [documentation](http://docs.ggplot2.org/current/)  
+
+
+
