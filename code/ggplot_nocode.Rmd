@@ -25,6 +25,7 @@ Every ggplot starts with a base layer. This is an empty layer from which we buil
 
 Now we need some data. Notice that our plot is still empty as we have yet to define how we want to plot the data.
 ```{r}
+
 ```
 
 To construct a plot we must define our asthetics.  This is how we connect the data to our scales, such as the x and y scales, the colour scale, the shape scale, etc.  We do this using the `aes()` function.  
@@ -77,12 +78,14 @@ Ok, now we have a figure that we like, let's put on some finishing touches
 Aesthetics can be defined for each geom individually or for all geoms in the `ggplot()` call.
 
 ```{r}
+
 ```
 
 
 We use facets to split our data into small multiples
 
 ```{r}
+
 ```
 
 ## Exploring our data graphically
@@ -101,20 +104,21 @@ For the growth rate in LB lets look at the change over time and see if there are
 Here we can see that the isolates are collected in bursts over short periods of time.  Presumably these correspond to the excacerbation events.
 
 ```{r}
-
 ```
 
 We can add a trend line to see if there is a decrease.
 ```{r}
+
 ```
 
 
 To get a closer look at each clinical event we can use facets
 
 ```{r}
+
 ```
 
-Now add the trend line
+Save the plot
 ```{r}
 ```
 
@@ -128,6 +132,10 @@ An alternative view would be to look at the clincal events as boxplots
 We can add a colour variable to help view the plot.
 
 ```{r}
+```
+
+```{r}
+
 ```
 
 
