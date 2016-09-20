@@ -1,0 +1,80 @@
+---
+title: "Introduction to Bioconductor"
+---
+
+```{r, message=FALSE, echo=FALSE}
+library(knitr)
+opts_chunk$set(collapse = TRUE)
+```
+
+
+## Installing Bioconductor packages
+
+Install Bioconductor first, will install lots of "base" packages
+```{r, eval=FALSE}
+source("https://bioconductor.org/biocLite.R")
+biocLite(c("Biostrings", "GenomicRanges"))
+```
+
+
+```{r}
+library(Biostrings)
+library(GenomicRanges)
+library(stringr)
+```
+
+
+## Manipulating sequences
+```{r}
+aa = readAAStringSet("../datasets/Caenorhabditis_elegans.WBcel235.pep.all.fa.gz")
+dna = readDNAStringSet("../datasets/Caenorhabditis_elegans.WBcel235.cds.all.fa.gz")
+
+aa
+dna
+
+head(names(aa))
+```
+
+## Example operations with Biostrings
+
+```{r}
+# Frequence of aa's
+head(alphabetFrequency(aa))
+head(alphabetFrequency(dna))
+
+# translate
+translate(dna)
+
+# reverse complement
+reverseComplement(dna)
+
+# subsample 10 random protein sequences and fix up the names
+myseqs = aa[sample(1:10)]
+names(myseqs)
+new_names = str_split_fixed(names(myseqs), " ", 2)[,1]
+names(myseqs) = new_names
+writeXStringSet(myseqs, "myseqs.fasta")
+```
+
+
+## GenomicRanges
+
+```{r}
+gr = readRDS("../datasets/granges.rds")
+
+gr
+
+seqnames(gr)
+
+ranges(gr)
+
+gr[2:3]
+```
+
+IRanges
+
+```{r}
+IRanges(start = 1:10, end = 7:16)
+```
+
+

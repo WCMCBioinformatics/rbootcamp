@@ -1,0 +1,68 @@
+---
+title: "Day 5"
+date: "September 19, 2016"
+output: 
+ revealjs::revealjs_presentation:
+  theme: moon
+  incremental: true
+---
+
+```{r, message=FALSE, echo=FALSE}
+library(knitr)
+opts_chunk$set(collapse = FALSE)
+```
+
+
+## Overview  
+
+- Heatmaps
+- Intro to Bioconductor
+- Bioconductor essentials
+
+
+## Bioconductor
+
+**What can you do with it?**
+
+-----
+
+### Sequence analysis
+
+- fasta, fastq, BAM, gff, bed, wig, VCF
+- trim, transform, align
+- quality control
+- RNA-seq, CHIP-seq, differential expression
+
+------  
+
+### Access data
+
+- Sequence Read Archive, GEO, Biomart, Kegg, Reactome, NBCI, etc
+- Annotation data for most model organisms
+
+------  
+
+### Other  
+
+- flow cytometry, mass spec, proteomics, image analysis
+
+-----  
+
+### Getting help
+
+
+-----
+
+### Installing packages
+
+- Bioclite
+- Biconductor versions
+- How to figure out what you need
+
+----
+
+### Basics
+
+- Manipulating sequences with BioStrings
+- SummarizedExperiment class
+- GRanges

@@ -1,0 +1,115 @@
+---
+title: "Tidy gene expression and heatmap"
+output: pdf_document
+---
+
+```{r, message=FALSE, echo=FALSE}
+library(knitr)
+opts_chunk$set(collapse = TRUE) 
+```
+
+```{r}
+library(tidyverse)
+library(stringr)
+```
+
+## Load it up
+
+```{r}
+
+```
+
+## Clean up
+
+Let's get rid of X9 and X13, these are averages
+```{r}
+
+```
+
+and pull out the "Blood Aged" column, but we'll keep this in case we need it later
+```{r}
+
+```
+
+
+Now we can get rid of the first row 
+```{r}
+
+```
+
+## Getting variable information
+
+Now we need to extract our variable information from the column names
+```{r}
+
+
+# get the day variable
+
+
+# now the age variable
+
+
+# we'll need a sample_ID variable for later
+
+```
+
+We'll create a new dataframe to hold our sample information, including a sample ID variable
+```{r}
+
+```
+
+now we rename our columns with the new sample ID, and renaming our gene column at the same time
+```{r}
+
+```
+
+
+Now for the grand finale, joining the tables, first gathering the sample columns in the fpkm table and converting the expression column to numeric
+```{r}
+# first let's get rid of rows with NA's
+
+```
+
+Tada!
+
+## Making a heatmap
+
+```{r}
+library(pheatmap)
+set.seed(7592)
+```
+
+We'll need a matrix of expression values and a dataframe of sample info
+
+```{r}
+
+# filter out genes with all zeros
+# get rid of duplicate genes which look to be an excel f*** up
+# selct 100 top genes
+
+
+
+```
+
+Ok, let's make a heatmap
+
+```{r}
+
+```
+
+Hmm, that's not right! Let's try scaling
+
+```{r}
+
+```
+
+Add an annotation to the columns
+```{r}
+
+```
+
+`pheatmap` has loads of options.  Read the help page and play around
+
+
+
+
