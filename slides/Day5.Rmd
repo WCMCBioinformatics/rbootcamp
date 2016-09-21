@@ -61,8 +61,55 @@ opts_chunk$set(collapse = FALSE)
 
 ----
 
-### Basics
+## Example Packages
 
-- Manipulating sequences with BioStrings
-- SummarizedExperiment class
-- GRanges
+-----
+
+### Sequences
+
+- Biostrings: fasta sequences  
+- ShortRead: fastq sequences  
+- BAM files: Rsamtools, GenomicRanges, GenomicAlignments  
+
+
+----- 
+
+### RNA-seq
+
+- DESeq
+- edgeR  
+- limma
+
+
+-----
+
+### Functional analysis
+
+- clusterProfiler
+- goseq
+- GOstats
+- SPIA
+
+-----
+
+### Annotations and Genomes
+
+- microarray probes
+- genome sequences
+- loads of other annotations
+- Biomart
+
+----
+
+### Getting public data
+
+- Biomart: ensemble
+- Reactome.db
+- KEGGREST
+- GEOmetadb
+- GEOquery
+- SRAdb
+
+
+
+
