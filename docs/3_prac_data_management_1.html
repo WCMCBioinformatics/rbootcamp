@@ -318,6 +318,9 @@ div.tocify {
     <li>
       <a href="7_wrapup.html">Reproducability and wrapup</a>
     </li>
+    <li>
+      <a href="8_Homework_Answers.html">Homework Answers</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -372,7 +375,133 @@ div.tocify {
 </div>
 
 
-
+<pre class="r"><code>library(&quot;dplyr&quot;)
+library(&quot;tidyr&quot;)
+library(&quot;ggplot2&quot;)
+library(&quot;readr&quot;)</code></pre>
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>The data is from a genotype test where the sequence of part of the HIV pol gene is sequenced. The patient sequence is compared to a database to identify resistance causing mutations.</p>
+<p>The 3 classes of drugs tested are NRTI, NNRTI, PI. Don’t worry about drug specifics for the purposes of this exercise</p>
+<p>For this dataset, no drug resistance for that class is coded as 0 and resistance is coded as 1.</p>
+</div>
+<div id="loading-the-data" class="section level2">
+<h2>Loading the data</h2>
+<p>Load database results for patients in study.</p>
+<pre class="r"><code>db = read_csv(&quot;datasets/DB_results.csv&quot;)
+## Parsed with column specification:
+## cols(
+##   PATID = col_integer(),
+##   First_pos_test = col_date(format = &quot;&quot;),
+##   ENUM = col_character(),
+##   DRAWN_DATE = col_date(format = &quot;&quot;),
+##   NRTI = col_integer(),
+##   NNRTI = col_integer(),
+##   PI = col_integer()
+## )</code></pre>
+<p>Load table with all the sequences for the clinic.</p>
+<pre class="r"><code>seqs = read_csv(&quot;datasets/All_sequences.csv&quot;)
+## Parsed with column specification:
+## cols(
+##   PATID = col_integer(),
+##   DRAWN_DATE = col_date(format = &quot;&quot;),
+##   LOCATION = col_character(),
+##   ENUM = col_character(),
+##   TESTCODE = col_character(),
+##   STRING = col_character()
+## )</code></pre>
+</div>
+<div id="looking-at-our-data" class="section level2">
+<h2>Looking at our data</h2>
+<p>What did we just load?!</p>
+<pre class="r"><code>glimpse(db)
+## Observations: 23
+## Variables: 7
+## $ PATID          &lt;int&gt; 4, 4, 4, 5, 5, 5, 5, 5, 5, 1, 1, 1, 7, 7, 7, 7,...
+## $ First_pos_test &lt;date&gt; 1995-07-10, 1995-07-10, 1995-07-10, 1999-02-01...
+## $ ENUM           &lt;chr&gt; &quot;104A&quot;, &quot;083A&quot;, &quot;274A&quot;, &quot;160A&quot;, &quot;266A&quot;, &quot;314A&quot;,...
+## $ DRAWN_DATE     &lt;date&gt; 2001-10-23, 2008-10-15, 2011-09-22, 2003-09-04...
+## $ NRTI           &lt;int&gt; 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1,...
+## $ NNRTI          &lt;int&gt; 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1,...
+## $ PI             &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
+glimpse(seqs)
+## Observations: 33
+## Variables: 6
+## $ PATID      &lt;int&gt; 12, 1, 1, 1, 13, 14, 15, 2, 3, 3, 3, 3, 3, 4, 4, 4,...
+## $ DRAWN_DATE &lt;date&gt; 2003-09-22, 2006-02-06, 2006-12-19, 2010-05-25, 20...
+## $ LOCATION   &lt;chr&gt; &quot;Calgary_AB&quot;, &quot;Calgary_AB&quot;, &quot;Calgary_AB&quot;, &quot;Calgary_...
+## $ ENUM       &lt;chr&gt; &quot;180A&quot;, &quot;241A&quot;, &quot;562B&quot;, &quot;318A&quot;, &quot;292A&quot;, &quot;201A&quot;, &quot;02...
+## $ TESTCODE   &lt;chr&gt; &quot;VIRCOGENPR&quot;, &quot;POL_1017&quot;, &quot;VIRCOGENPR&quot;, &quot;VIRCOGENPR...
+## $ STRING     &lt;chr&gt; &quot;CCTCAAATCACTCTTTGGCAACGACCCCTCGTCACAATAAAGATAGGGGG...</code></pre>
+<p>Is this tidy data? Why or why not?</p>
+</div>
+<div id="preparing-our-data" class="section level2">
+<h2>Preparing our data</h2>
+<div id="joining-tables" class="section level3">
+<h3>Joining tables</h3>
+<p>To do our analysis we need to combined the information from the two tables. To do this we’ll use a join operation. Here we use a left join which will add the columns from the sequences table to the db table only where there is a match base on a ‘key’ column. We’ll let the <code>left_join()</code> function decide which columns to use as keys, based on column names</p>
+<pre class="r"><code>all = left_join(db, seqs)
+## Joining, by = c(&quot;PATID&quot;, &quot;ENUM&quot;, &quot;DRAWN_DATE&quot;)
+all
+## # A tibble: 23 × 10
+##    PATID First_pos_test  ENUM DRAWN_DATE  NRTI NNRTI    PI    LOCATION
+##    &lt;int&gt;         &lt;date&gt; &lt;chr&gt;     &lt;date&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;       &lt;chr&gt;
+## 1      4     1995-07-10  104A 2001-10-23     0     0     0  Calgary_AB
+## 2      4     1995-07-10  083A 2008-10-15     0     0     0  Calgary_AB
+## 3      4     1995-07-10  274A 2011-09-22     0     0     0  Calgary_AB
+## 4      5     1999-02-01  160A 2003-09-04     1     1     0  Calgary_AB
+## 5      5     1999-02-01  266A 2005-04-21     1     1     0  Calgary_AB
+## 6      5     1999-02-01  314A 2008-08-26     0     1     0  Calgary_AB
+## 7      5     1999-02-01  090B 2009-09-02     1     1     0 Edmonton_AB
+## 8      5     1999-02-01  493A 2010-10-20     0     0     0  Calgary_AB
+## 9      5     1999-02-01  897A 2015-11-17     0     1     0  Calgary_AB
+## 10     1     1986-08-06  241A 2006-02-06     0     0     0  Calgary_AB
+## # ... with 13 more rows, and 2 more variables: TESTCODE &lt;chr&gt;,
+## #   STRING &lt;chr&gt;</code></pre>
+</div>
+<div id="clean-up-column-names" class="section level3">
+<h3>Clean up column names</h3>
+<pre class="r"><code>all = all %&gt;% rename(Pat_ID = PATID, 
+                             First_positive_test = First_pos_test, 
+                             Geno_ID = ENUM,
+                             Geno_date = DRAWN_DATE,
+                             Location = LOCATION,
+                             Sequence = STRING)</code></pre>
+<p>And we don’t want the <code>TESTCODE</code> column, let’s drop it</p>
+<pre class="r"><code>all = all %&gt;% select(-TESTCODE)</code></pre>
+</div>
+<div id="tidy-it" class="section level3">
+<h3>Tidy it</h3>
+<p>Finally let’s get our tidy data</p>
+<pre class="r"><code>final = all %&gt;% gather(Drug, Resistance, NRTI, NNRTI, PI)</code></pre>
+<p>Note that I didn’t want intermediate copies of the data here so I’ve simply keep using the same object name to overwrite the previous one. Sometimes in your own analysis you may want to keep certain intermediate copies.</p>
+</div>
+</div>
+<div id="analysis" class="section level2">
+<h2>Analysis</h2>
+<p>First we want to calculate the sum of the resistance for all three drugs for eacch genotype results</p>
+<pre class="r"><code>meta = final %&gt;% 
+    group_by(Geno_ID, Pat_ID) %&gt;% 
+    summarise(sum_resistance = sum(Resistance))</code></pre>
+<p>Currently, HIV is not cured by the ARV drugs, only suppressed in the body. Therefore patients can acumulate resistance over time. If you look at the data, you can see that some patients have different resistance results. This is because the PCR used in the genotype only records the most abundant HIV variant circulating at that time but there are many variants in the population of that patient so we often assume that resistance is cumulative and therefore we want to categorize patients by their maximum resistance score ever (i.e. cumulative resistance).</p>
+<pre class="r"><code>cumm_res = meta %&gt;%
+  group_by(Pat_ID) %&gt;%
+  summarise(max_res = max(sum_resistance))</code></pre>
+<pre class="r"><code>meta = left_join(meta, cumm_res, by = &quot;Pat_ID&quot;)</code></pre>
+<p>Count the number of tests per patient in each category</p>
+<pre class="r"><code>ccr_counts = meta %&gt;%
+  group_by(Pat_ID, max_res) %&gt;%
+  summarise(freq = length(max_res)) </code></pre>
+<p>Plot the results in a boxplot</p>
+<pre class="r"><code>ccr_counts %&gt;% 
+    ggplot(aes(x = factor(max_res), y = freq)) +
+        geom_boxplot() +
+      theme_bw() +
+      labs(x = &quot;Cumulative class resistance/patient&quot;,
+             y = &quot;Frequency of tests&quot;,
+             title = &quot;Number of genotypes/patient by cumulative class resistance&quot;)</code></pre>
+<p><img src="3_prac_data_management_1_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
 
 
 

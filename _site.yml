@@ -23,6 +23,8 @@ navbar:
         href: 6_intro_to_bioconductor.html
       - text: "Reproducability and wrapup"
         href: 7_wrapup.html
+      - text: "Homework Answers"
+        href: 8_Homework_Answers.html
   - text: "References"
     icon: fa-external-link
     href: references.html
@@ -44,4 +46,8 @@ output:
     toc_float: 
      collapsed: false
 output_dir: "docs"
-exclude: "docs"
+exclude: 
+  - "docs" 
+  - "datasets"
+  - "code"
+  - "slides"

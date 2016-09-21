@@ -8,6 +8,120 @@ opts_chunk$set(collapse = TRUE)
 ```
 
 
+```{r}
+library("dplyr")
+library("tidyr")
+library("ggplot2")
+library("readr")
+```
+
+## Overview
+
+The data is from a genotype test where the sequence of part of the HIV pol gene is sequenced. The patient sequence is compared to a database to identify resistance causing mutations. 
+
+The 3 classes of drugs tested are NRTI, NNRTI, PI. Don't worry about drug specifics for the purposes of this exercise 
+
+For this dataset, no drug resistance for that class is coded as 0 and resistance is coded as 1.
+
+## Loading the data
+
+Load database results for patients in study.
+```{r}
+db = read_csv("datasets/DB_results.csv")
+```
+
+Load table with all the sequences for the clinic.
+```{r}
+seqs = read_csv("datasets/All_sequences.csv")
+```
+
+## Looking at our data
+
+What did we just load?!
+
+```{r}
+glimpse(db)
+glimpse(seqs)
+```
+
+Is this tidy data? Why or why not?
+
+## Preparing our data
+
+### Joining tables
+To do our analysis we need to combined the information from the two tables. To do this we'll use a join operation.  Here we use a left join which will add the columns from the sequences table to the db table only where there is a match base on a 'key' column. We'll let the `left_join()` function decide which columns to use as keys, based on column names
+
+```{r}
+all = left_join(db, seqs)
+all
+```
+
+
+### Clean up column names
+
+```{r}
+all = all %>% rename(Pat_ID = PATID, 
+							 First_positive_test = First_pos_test, 
+							 Geno_ID = ENUM,
+							 Geno_date = DRAWN_DATE,
+							 Location = LOCATION,
+							 Sequence = STRING)
+```
+
+And we don't want the `TESTCODE` column, let's drop it
+```{r}
+all = all %>% select(-TESTCODE)
+```
+
+### Tidy it
+
+Finally let's get our tidy data
+```{r}
+final = all %>% gather(Drug, Resistance, NRTI, NNRTI, PI)
+```
+
+Note that I didn't want intermediate copies of the data here so I've simply keep using the same object name to overwrite the previous one.  Sometimes in your own analysis you may want to keep certain intermediate copies.
+
+
+## Analysis
+
+First we want to calculate the sum of the resistance for all three drugs for eacch genotype results
+```{r}
+meta = final %>% 
+	group_by(Geno_ID, Pat_ID) %>% 
+	summarise(sum_resistance = sum(Resistance))
+```
+
+Currently, HIV is not cured by the ARV drugs, only suppressed in the body. Therefore patients can acumulate resistance over time.  If you look at the data, you can see that some patients have different resistance results. 
+This is because the PCR used in the genotype only records the most abundant HIV variant circulating at that time but there are many variants in the population of that patient so we often assume that resistance is cumulative and therefore we want to categorize patients by their maximum resistance score ever (i.e. cumulative resistance).
+
+```{r}
+cumm_res = meta %>%
+  group_by(Pat_ID) %>%
+  summarise(max_res = max(sum_resistance))
+```
+
+```{r}
+meta = left_join(meta, cumm_res, by = "Pat_ID")
+```
+
+Count the number of tests per patient in each category
+```{r}
+ccr_counts = meta %>%
+  group_by(Pat_ID, max_res) %>%
+  summarise(freq = length(max_res)) 
+```
+
+Plot the results in a boxplot
+```{r}
+ccr_counts %>% 
+	ggplot(aes(x = factor(max_res), y = freq)) +
+		geom_boxplot() +
+	  theme_bw() +
+	  labs(x = "Cumulative class resistance/patient",
+	  		 y = "Frequency of tests",
+	  		 title = "Number of genotypes/patient by cumulative class resistance")
+```
 
 
 

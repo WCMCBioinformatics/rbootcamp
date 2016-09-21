@@ -7,14 +7,6 @@ library(knitr)
 opts_chunk$set(collapse = TRUE)
 ```
 
-Outline
-
-* R History
-* Programming concepts
-* Environments
-* How to work with objects: subsetting, indexing, apply functions
-* Other important key R functions including basic statistics
-
 
 ## R History
 
@@ -317,7 +309,7 @@ Some tips:
 
 
 
-## How to work with objects: subsetting, indexing, apply functions
+## How to work with objects: subsetting and indexing
 
 ### Subsetting
 
@@ -421,23 +413,6 @@ Bonus: Why do we have to use `[[` here?
 * In R, looping over very large objects, for example a data frame with a million rows, can be very slow, especially if you don't predefine your output.
 * For this reason, in many cases it is usually more efficient and often cleaner to use an `apply` function.
 
-### Apply
-
-The apply family of functions can be some of the most useful but most confusing functions to use.  They are both fast and powerful but do remember that loops work too, despite what you might read in forums.
-
-Here we'll just a brief introduction so you are familiar with them, as they are topic more suitable for an advanced workshop.
-
-
-
-
-
-
-
-
-
-
-
-
 
 ## Other important key R functions 
 
@@ -515,33 +490,14 @@ abline(my_model, col = "red")
 
 Install the readr package and using the readr documentation figure out how to load the `pa_phenotype_data.csv` dataset. With this dataset answer the following:
 
-```{r}
-pa = read_csv("datasets/pa_phenotype_data.csv")
-```
 
 * How many rows and columns are in the data?
 
-```{r}
-nrow(pa)
-ncol(pa)
-```
-
-
 * What is the maximum value in the "LB" column?
-```{r}
-colnames(pa)
-max(pa$LB)
-```
 
 * Are variables "Protease" and "Gelatinase" linearly correlated?
-```{r}
-cor(pa$Protease, pa$Gelatinase, use = "complete.obs")
-
-model = lm(Protease ~ Gelatinase, data = pa)
-model
-summary(model)
-```
 
 * What is the adjusted R-squared?
+
 * Write a function that mean centers a column (subtract the column mean from every value in that column) and run it on the last 6 columns in the dataset.  
 
