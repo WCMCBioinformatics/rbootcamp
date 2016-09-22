@@ -1,0 +1,267 @@
+---
+title: "Data Visualization"
+---
+
+# Plots, looping over plots, and creating a plotting function
+For loops
+
+First, let's organize our data and get the code to work for one of the items we want to loop through. 
+
+
+```{r, echo=FALSE, results='hide'}
+
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+
+data_with_triplicates <- read.csv('/home/oscar/Dropbox/UCVM rbootcamp master/datasets/compounds_triplicates.csv')
+data_with_triplicates <- mutate(data_with_triplicates, 
+                                identifier = paste(compound, salinity, group,sep = '_')) 
+
+head(data_with_triplicates)
+
+data_with_triplicates <- data_with_triplicates %>% filter(group == 'treatment' | group == 'unamended', methane_umoles > 0)
+
+str(data_with_triplicates)
+data_with_triplicates$replicate_number <- as.factor(data_with_triplicates$replicate_number)
+
+str(data_with_triplicates)
+glimpse(data_with_triplicates)
+
+hist(data_with_triplicates$methane_umoles)
+colnames(data_with_triplicates)
+```
+
+
+## Plot for a single compound
+```{r, echo=TRUE}
+
+plot <- 
+      ggplot(subset(data_with_triplicates,
+                    data_with_triplicates$compound =='benzene'),
+             aes(day, methane_umoles, 
+                 shape = replicate_number)) + 
+  
+  theme(panel.margin = unit(2, "lines")) +
+  
+  geom_point(aes(shape = replicate_number), size = 4) +
+  
+  facet_wrap( ~  salinity, ncol=2, nrow = 2) + #scales = 'free') + #scales = 'free' allows to each axis to have its owns scale, according to their associated data
+      geom_line(aes(shape = replicate_number)) +
+      
+      scale_y_continuous("Methane (umoles)", 
+                         limits=c(0, 240)) +
+  
+      scale_x_continuous("Time (days)") +
+      
+      ggtitle('Benzene microcosms of incubations by salinity') +
+      theme(plot.title = element_text(family = "Arial",
+                                      color="black", face="bold",
+                                      size=18, hjust=0.5, 
+                                      vjust =1)) +
+      
+      theme(axis.title.x = element_text(family = "Arial",
+                                        color="black",
+                                        face="bold",
+                                        size=14, vjust = -0.5,
+                                        hjust=0.5, 
+                                        margin=margin(20,20,0,0)),
+            axis.text.x = element_text (colour='black', size = 12,
+                                        family = 'Arial'),
+            axis.title.y = element_text(family = "Arial",
+                                        color="black",
+                                        face="bold",
+                                        size=14, vjust = 1,
+                                        hjust=0.5,
+                                        margin=margin(0,20,0,0)),
+            axis.text.y = element_text (colour='black', size = 12,
+                                        family = 'Arial')) +
+       theme(legend.justification=c(0.3,0),
+             legend.position=c(0.8, -0.05),
+             legend.title = element_text(size = 12),
+             legend.text = element_text(colour="black", 
+                                        size = 14),
+             legend.key.size = unit(2, "lines")) +
+        theme(strip.text = element_text(size=16)) #facet title font size
+
+
+```
+
+Yey! Our single-compound plot works! Now, let's make it a for loop
+
+## Convert the single-compound plot into a for loop (automating)  
+
+Frequently enough, we find cases where we need to do several similar graphs from one or several datasets, following the same structure. In those cases, we have two options: copy, paste and ajust variables n times, or script a flow control method (for loops, apply family, etc.) to achieve our goal. The code bellow loops over our data to creates plots.
+
+
+```{r, echo=FALSE, include=FALSE}
+
+#Create a folder to save images after created:
+results_loop_plots <- "/home/oscar/Dropbox/UCVM rbootcamp master/"
+getwd()
+
+compound_list <- unique(data_with_triplicates$compound)
+
+  for (i in seq_along(compound_list)) {
+    
+    plot <- 
+  ggplot(subset(data_with_triplicates,
+                    data_with_triplicates$compound == compound_list[i]),
+         aes(day, methane_umoles, shape = replicate_number)) +
+  
+  theme(panel.margin = unit(2, "lines")) +
+  
+  geom_point(aes(shape = replicate_number), size = 4) +
+  
+  facet_wrap( ~  salinity, ncol=2, nrow = 2) + #scales = 'free') + #scales = 'free' allows to each axis to have its owns scale, according to their associated data
+      geom_line(aes(shape = replicate_number)) +
+      
+      scale_y_continuous("Methane (umoles)", 
+                         limits=c(0, 240)) +
+  
+      scale_x_continuous("Time (days)") +
+      
+      ggtitle(paste(compound_list[i], ' microcosms of incubations by salinity\nafter 800 days of incubation', sep='')) +
+  
+      theme(plot.title = element_text(family = "Arial",
+                                      color="black", face="bold",
+                                      size=18, hjust=0.5, 
+                                      vjust =0.5)) +
+      
+      theme(axis.title.x = element_text(family = "Arial",
+                                        color="black",
+                                        face="bold",
+                                        size=14, vjust = -0.5,
+                                        hjust=0.5, 
+                                        margin=margin(20,20,0,0)),
+            axis.text.x = element_text (colour='black', size = 12,
+                                        family = 'Arial'),
+            axis.title.y = element_text(family = "Arial",
+                                        color="black",
+                                        face="bold",
+                                        size=14, vjust = 1,
+                                        hjust=0.5,
+                                        margin=margin(0,20,0,0)),
+            axis.text.y = element_text (colour='black', size = 12,
+                                        family = 'Arial')) +
+       theme(legend.justification=c(0.3,0),
+             legend.position=c(0.8, -0.05),
+             legend.title = element_text(size = 12),
+             legend.text = element_text(colour="black", 
+                                        size = 14),
+             legend.key.size = unit(2, "lines")) +
+        theme(strip.text = element_text(size=16))
+    
+    print(plot) #add this at the end, after showing it's required
+    
+    #Save plots as image
+    ggsave(plot, file=paste(results_loop_plots,
+                            'compounds by salinity',
+                             compound_list[i], ".png", sep=''),
+           scale=2)
+    
+    #Save plots as pdf
+    #ggsave(plot, file=paste(results,
+     #                       'methane_graphs',
+      #                      compound_list[i], ".pdf", sep=''),
+       #    scale=2)
+
+  }
+  
+  
+
+```
+
+Now, your labmates/coworkers/collegues want the same type of plots you created, but they don't know how to do it. What would you do after making the plots for one, then two peers?
+
+Create a function and pass it along (meaning, "good luck!")
+
+```{r, echo=FALSE}
+
+results_loop_plots <- "/home/oscar/Dropbox/UCVM rbootcamp master/"
+getwd()
+
+all_plots <- function(df, na.rm = TRUE, ...){
+  
+  compound_list <- unique(df$compound)
+
+  for (i in seq_along(compound_list)) {
+    
+    plot <- 
+  ggplot(subset(df,
+                df$compound == compound_list[i]),
+         aes(day, methane_umoles, shape = replicate_number)) +
+  
+  theme(panel.margin = unit(2, "lines")) +
+  
+  geom_point(aes(shape = replicate_number), size = 4) +
+  
+  facet_wrap( ~  salinity, ncol=2, nrow = 2) + #scales = 'free') + #scales = 'free' allows to each axis to have its owns scale, according to their associated data
+      geom_line(aes(shape = replicate_number)) +
+      
+      scale_y_continuous("Methane (umoles)", 
+                         limits=c(0, 240)) +
+  
+      scale_x_continuous("Time (days)") +
+      
+      ggtitle(paste(compound_list[i], ' microcosms of incubations by salinity\nafter 800 days of incubation', sep='')) +
+  
+      theme(plot.title = element_text(family = "Arial",
+                                      color="black", face="bold",
+                                      size=18, hjust=0.5, 
+                                      vjust =0.5)) +
+      
+      theme(axis.title.x = element_text(family = "Arial",
+                                        color="black",
+                                        face="bold",
+                                        size=14, vjust = -0.5,
+                                        hjust=0.5, 
+                                        margin=margin(20,20,0,0)),
+            axis.text.x = element_text (colour='black', size = 12,
+                                        family = 'Arial'),
+            axis.title.y = element_text(family = "Arial",
+                                        color="black",
+                                        face="bold",
+                                        size=14, vjust = 1,
+                                        hjust=0.5,
+                                        margin=margin(0,20,0,0)),
+            axis.text.y = element_text (colour='black', size = 12,
+                                        family = 'Arial')) +
+       theme(legend.justification=c(0.3,0),
+             legend.position=c(0.8, -0.05),
+             legend.title = element_text(size = 12),
+             legend.text = element_text(colour="black", 
+                                        size = 14),
+             legend.key.size = unit(2, "lines")) +
+        theme(strip.text = element_text(size=16))
+    
+    print(plot) #add this at the end, after showing it's required
+    
+    #Save plots as image
+    ggsave(plot, file=paste(results_loop_plots,
+                            'compounds by salinity',
+                             compound_list[i], ".png", sep=''),
+           scale=2)
+    
+    #Save plots as pdf
+    #ggsave(plot, file=paste(results,
+     #                       'methane_graphs',
+      #                      compound_list[i], ".pdf", sep=''),
+       #    scale=2)
+
+  }
+}
+
+
+all_plots(data_with_triplicates)
+
+```
+
+[Loops and plots](http://www.reed.edu/data-at-reed/resources/R/loops_with_ggplot2.html)
+
+
+```{r, echo=FALSE, include=FALSE}
+sessionInfo()
+
+```
+
