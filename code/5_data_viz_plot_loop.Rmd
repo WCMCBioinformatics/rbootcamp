@@ -13,8 +13,9 @@ First, let's organize our data and get the code to work for one of the items we 
 library(dplyr)
 library(ggplot2)
 library(ggthemes)
+library(readr)
 
-data_with_triplicates <- read.csv('/home/oscar/Dropbox/UCVM rbootcamp master/datasets/compounds_triplicates.csv')
+data_with_triplicates <- read_csv('../datasets/compounds_triplicates.csv')
 data_with_triplicates <- mutate(data_with_triplicates, 
                                 identifier = paste(compound, salinity, group,sep = '_')) 
 
