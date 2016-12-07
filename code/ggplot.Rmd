@@ -1,9 +1,12 @@
 ---
 title: "Creating graphics with ggplot"
-output: pdf_document
+output: 
+  html_document: 
+    highlight: tango
+    theme: spacelab
 ---
 
-```{r, message=FALSE, echo=FALSE}
+```{r, message=FALSE, include=FALSE}
 library(knitr)
 opts_chunk$set(collapse = TRUE)
 ```
@@ -23,6 +26,7 @@ Every ggplot starts with a base layer. This is an empty layer from which we buil
 ```{r}
 ggplot()
 ```
+
 
 Now we need some data. Notice that our plot is still empty as we have yet to define how we want to plot the data.
 ```{r}
