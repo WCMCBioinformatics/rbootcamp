@@ -3,9 +3,9 @@ navbar:
  title: "UCVM R Bootcamp"
  type: inverse
  left:
-  - text: "Home"
-    icon: "fa-home"
-    href: index.html
+  - text: "Overview"
+    icon: "fa-map-signs"
+    href: overview.html
   - text: "Course Materials"
     icon: fa-book
     menu:
