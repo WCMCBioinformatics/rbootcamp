@@ -1,0 +1,9 @@
+.jumbotron {
+	position: relative;
+	background: #000 url("bootcamp-logo-final.png") center center;
+	height: 100%;
+	width: 100%;
+	background-size: cover;
+	overflow: hidden;
+	color:white;
+}
