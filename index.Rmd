@@ -13,7 +13,7 @@ output:
 
 Welcome!  This is the course website for the R Bootcamp for Biologists offered by the Faculty of Veterinary Medicine at the University of Calgary.  All materials are avaiable for public use under the CC BY 4.0 license.
 
-<p><a class="btn btn-primary btn-lg" href="Overview.html" role="button">Course Overview</a></p>
+<p><a class="btn btn-primary btn-lg" href="overview.html" role="button">Course Overview</a></p>
 
 </div>
 </div>
