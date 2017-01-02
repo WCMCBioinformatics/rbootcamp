@@ -29,7 +29,6 @@ At the end of the workshop you will able to:
 * Understand the difference between `<-` and `=` and make your own choice about which one to use
 
 
-
 ## Preparation
 
 Attendees are expected to come with their own laptops and have already installed R and RStudio as well as completed at least one of the following online tutorials. 
@@ -44,49 +43,51 @@ This small bit of preparation will allow us to move quickly through the basics a
 ### Course reference
 
 Main text:  
-
-[Advanced R](http://adv-r.had.co.nz/) by Hadley Wickham
-
-Secondary reading:  
-
 [R for Data Science](http://r4ds.had.co.nz/) by Garret Grolemund and Hadley Wickham
 
+Secondary reading:  
+[Advanced R](http://adv-r.had.co.nz/) by Hadley Wickham
 
-## Outline
+## Course Materials
 
-### [Introduction](1_introduction.html)
-
-* Introductions and course objectives
-* Make sure everyone has R and Rstudio running
-* Brief overview of the basic material
-	- Data types
-	- Data structures
-* How to get help and deal with errors
-
-
-### [Understanding R](2_understanding_R.html)
+### Understanding R 
 
 * R History
-* Programming concepts
+* Packages
+* Assignment
 * Environments
-* How to work with objects: subsetting, indexing, apply functions
 * Other important key R functions including basic statistics
+* Errors and getting help
 
+### Data Structures
 
-### [Practical data management 1](3_prac_data_management_1.html)
+* Vectors
+* Lists
+* Factors
+* Matrices 
+* Data frames
+
+### Subsetting
+
+* Ways to subset
+* Subsetting operators
+
+### Programming Concepts]
+
+* Functions
+* Conditionals
+* Loops
+
+### Practical data management
 
 * Tidy data
 * Pipes: Ceci n'est pas un pipe
 * Intro to dplyr and tidyr
 * Restructuring data and doing stuff to it
-
-### [Practical data management 2](4_prac_data_management_2.html)
-
-* Continuing dplyr
 * Regular expressions and stringr
 
 
-### [Data visualization](5_data_viz.html)
+### Data Visualization
 
 * ggplot
 * heatmaps
@@ -94,18 +95,18 @@ Secondary reading:
 * Building up a complex visualization
 
 
-### [Introduction to Bioconductor](6_intro_to_bioconductor.html)
+### Introduction to Bioconductor
 
 * Finding and installing biocondutor packages
 * Learning what packages do and how to evaluate them
 * Intro to some key data structures: XStringSet, IRanges, expressionset, etc.
 
 
-### [Reproducability and wrapup](7_wrapup.html)
+### Reproducibility
 
 * Rapid introduction to managing and reproducing your analysis: Rmarkdown, git and github, best practices
 * Writing your own functions
-* Review and catchup
+
 
 
 

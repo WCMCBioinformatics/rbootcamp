@@ -12,22 +12,15 @@ navbar:
   - text: "Course Materials"
     icon: fa-book
     menu:
-      - text: "Introduction"
-        href: 1_introduction.html
+      - text: "Slides"
       - text: "Understanding R"
-        href: 2_understanding_R.html
-      - text: "Practical data management 1"
-        href: 3_prac_data_management_1.html
-      - text: "Practical data management 2"
-        href: 4_prac_data_management_2.html
-      - text: "Data visualization"
-        href: 5_data_viz.html
-      - text: "Introduction to Bioconductor"
-        href: 6_intro_to_bioconductor.html
-      - text: "Reproducability and wrapup"
-        href: 7_wrapup.html
-      - text: "Homework Answers"
-        href: 8_Homework_Answers.html
+        href: slides/Understanding_R_slides.html
+      - text: "Data Structures"
+        href: slides/Data_Structures_slides.html
+      - text: "-----------------"
+      - text: "Code"
+      - text: "Data Structures"
+        href: code/Data_Structures.html
   - text: "References"
     icon: fa-external-link
     href: references.html
@@ -42,15 +35,13 @@ navbar:
  right:
   - icon: fa-github fa-2x
     href: https://github.com/ucvm/rbootcamp
+output_dir: "docs"
 output:
   html_document:
     theme: lumen
     toc: true
     toc_float: 
      collapsed: false
-output_dir: "docs"
 exclude: 
   - "docs" 
   - "datasets"
-  - "code"
-  - "slides"

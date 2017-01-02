@@ -305,29 +305,17 @@ div.tocify {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Slides</li>
     <li>
-      <a href="1_introduction.html">Introduction</a>
+      <a href="slides/Understanding_R_slides.html">Understanding R</a>
     </li>
     <li>
-      <a href="2_understanding_R.html">Understanding R</a>
+      <a href="slides/Data_Structures_slides.html">Data Structures</a>
     </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Code</li>
     <li>
-      <a href="3_prac_data_management_1.html">Practical data management 1</a>
-    </li>
-    <li>
-      <a href="4_prac_data_management_2.html">Practical data management 2</a>
-    </li>
-    <li>
-      <a href="5_data_viz.html">Data visualization</a>
-    </li>
-    <li>
-      <a href="6_intro_to_bioconductor.html">Introduction to Bioconductor</a>
-    </li>
-    <li>
-      <a href="7_wrapup.html">Reproducability and wrapup</a>
-    </li>
-    <li>
-      <a href="8_Homework_Answers.html">Homework Answers</a>
+      <a href="code/Data_Structures.html">Data Structures</a>
     </li>
   </ul>
 </li>
@@ -421,55 +409,62 @@ div.tocify {
 <p>This small bit of preparation will allow us to move quickly through the basics and get to the good stuff.</p>
 <div id="course-reference" class="section level3">
 <h3>Course reference</h3>
-<p>Main text:</p>
-<p><a href="http://adv-r.had.co.nz/">Advanced R</a> by Hadley Wickham</p>
-<p>Secondary reading:</p>
-<p><a href="http://r4ds.had.co.nz/">R for Data Science</a> by Garret Grolemund and Hadley Wickham</p>
+<p>Main text:<br />
+<a href="http://r4ds.had.co.nz/">R for Data Science</a> by Garret Grolemund and Hadley Wickham</p>
+<p>Secondary reading:<br />
+<a href="http://adv-r.had.co.nz/">Advanced R</a> by Hadley Wickham</p>
 </div>
 </div>
-<div id="outline" class="section level2">
-<h2>Outline</h2>
-<div id="introduction" class="section level3">
-<h3><a href="1_introduction.html">Introduction</a></h3>
-<ul>
-<li>Introductions and course objectives</li>
-<li>Make sure everyone has R and Rstudio running</li>
-<li>Brief overview of the basic material
-<ul>
-<li>Data types</li>
-<li>Data structures</li>
-</ul></li>
-<li>How to get help and deal with errors</li>
-</ul>
-</div>
+<div id="course-materials" class="section level2">
+<h2>Course Materials</h2>
 <div id="understanding-r" class="section level3">
-<h3><a href="2_understanding_R.html">Understanding R</a></h3>
+<h3>Understanding R</h3>
 <ul>
 <li>R History</li>
-<li>Programming concepts</li>
+<li>Packages</li>
+<li>Assignment</li>
 <li>Environments</li>
-<li>How to work with objects: subsetting, indexing, apply functions</li>
 <li>Other important key R functions including basic statistics</li>
+<li>Errors and getting help</li>
 </ul>
 </div>
-<div id="practical-data-management-1" class="section level3">
-<h3><a href="3_prac_data_management_1.html">Practical data management 1</a></h3>
+<div id="data-structures" class="section level3">
+<h3>Data Structures</h3>
+<ul>
+<li>Vectors</li>
+<li>Lists</li>
+<li>Factors</li>
+<li>Matrices</li>
+<li>Data frames</li>
+</ul>
+</div>
+<div id="subsetting" class="section level3">
+<h3>Subsetting</h3>
+<ul>
+<li>Ways to subset</li>
+<li>Subsetting operators</li>
+</ul>
+</div>
+<div id="programming-concepts" class="section level3">
+<h3>Programming Concepts]</h3>
+<ul>
+<li>Functions</li>
+<li>Conditionals</li>
+<li>Loops</li>
+</ul>
+</div>
+<div id="practical-data-management" class="section level3">
+<h3>Practical data management</h3>
 <ul>
 <li>Tidy data</li>
 <li>Pipes: Ceci n’est pas un pipe</li>
 <li>Intro to dplyr and tidyr</li>
 <li>Restructuring data and doing stuff to it</li>
-</ul>
-</div>
-<div id="practical-data-management-2" class="section level3">
-<h3><a href="4_prac_data_management_2.html">Practical data management 2</a></h3>
-<ul>
-<li>Continuing dplyr</li>
 <li>Regular expressions and stringr</li>
 </ul>
 </div>
 <div id="data-visualization" class="section level3">
-<h3><a href="5_data_viz.html">Data visualization</a></h3>
+<h3>Data Visualization</h3>
 <ul>
 <li>ggplot</li>
 <li>heatmaps</li>
@@ -478,19 +473,18 @@ div.tocify {
 </ul>
 </div>
 <div id="introduction-to-bioconductor" class="section level3">
-<h3><a href="6_intro_to_bioconductor.html">Introduction to Bioconductor</a></h3>
+<h3>Introduction to Bioconductor</h3>
 <ul>
 <li>Finding and installing biocondutor packages</li>
 <li>Learning what packages do and how to evaluate them</li>
 <li>Intro to some key data structures: XStringSet, IRanges, expressionset, etc.</li>
 </ul>
 </div>
-<div id="reproducability-and-wrapup" class="section level3">
-<h3><a href="7_wrapup.html">Reproducability and wrapup</a></h3>
+<div id="reproducibility" class="section level3">
+<h3>Reproducibility</h3>
 <ul>
 <li>Rapid introduction to managing and reproducing your analysis: Rmarkdown, git and github, best practices</li>
 <li>Writing your own functions</li>
-<li>Review and catchup</li>
 </ul>
 </div>
 </div>

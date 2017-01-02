@@ -1,0 +1,55 @@
+---
+title: "R Basics Practical"
+---
+
+```{r, message=FALSE, echo=FALSE}
+library(knitr)
+opts_chunk$set(collapse = TRUE)
+```
+
+```{r}
+library(readr)
+```
+
+
+## Understanding R 
+
+Install the readr package and using the readr documentation figure out how to load the `pa_phenotype_data.csv` dataset. With this dataset answer the following:
+
+```{r}
+pa = read_csv("datasets/pa_phenotype_data.csv")
+```
+
+__How many rows and columns are in the data?__
+
+```{r}
+nrow(pa)
+ncol(pa)
+```
+
+
+__What is the maximum value in the "LB" column?__
+```{r}
+colnames(pa)
+max(pa$LB)
+```
+
+__Are variables "Protease" and "Gelatinase" linearly correlated?__
+```{r}
+cor(pa$Protease, pa$Gelatinase, use = "complete.obs")
+
+model = lm(Protease ~ Gelatinase, data = pa)
+
+model
+
+```
+
+__What is the adjusted R-squared?__
+```{r}
+summary(model)
+```
+
+__Write a function that mean centers a column (subtract the column mean from every value in that column) and run it on the last 6 columns in the dataset.__
+
+TODO
+

@@ -1,0 +1,171 @@
+---
+title: "Programming Concepts"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+
+## Functions
+
+```{r}
+# base functions
+seq(1:5)
+sum(c(2, 39, 22))
+
+# parameters are given using a single '='
+x = rnorm(n = 100, mean = 35, sd = 2)
+
+# but they don't have to be named as long as you give them in the right order
+y = rnorm(100, 46, 1.5)
+plot(x, y)
+
+# functions can be nested
+print(paste("The mean of the x vector is", round(mean(x))))
+
+# a simple function of our own devising
+say_hello = function(name) {
+	say = paste("Hello", name)
+	print(say)
+}
+
+say_hello("Matthew")
+
+```
+
+
+## Conditionals
+
+### If/Else
+
+There are two main parts to an if statement.  The part where we make the decision (if) and then the code following the if statement that is excuted when the if statment is true.
+
+```{r}
+cats = "cool"
+
+if (cats == "cool") {
+	print("You know it!")
+}
+
+```
+
+Note the syntax here:  Double equals (==) to signify comparision instead of assignment and the use of curly brackets to indicate the code we run when the if statement is true.
+
+Adding an else statement allows to define code to run when the if statement is false.
+
+```{r}
+cats = "uncool"
+
+if (cats == "cool") {
+	print("You know it!")
+} else {
+	print("Whaaat?!")
+}
+```
+
+If statements can be nested:
+
+```{r}
+dogs = "cool"
+
+if (cats == "cool") {
+	print("You know it!")
+} else if (dogs == "cool" ) {
+	print("Phew, I was worried about you there.")
+} else {
+	print("Whaaat?!")
+}
+```
+
+This can be a good way to choose from a list options but be careful about nests, within nests, within nests.  
+  
+  
+### Logical operators
+
+Any statement that returns a TRUE or FALSE can be used in an if statement.
+```{r}
+3 + 2 == 4
+
+any(is.na(x))
+
+some_values = c(1,2,3,4)
+3 %in% some_values
+
+# The %in% function retuns TRUE or FALSE for every value on the left-hand side depending on if a
+# match is found on the right hand side.  This can be useful for if statements but only if it
+# returns a single TRUE/FALSE
+
+test_values = c(0,3,5)
+if (test_values %in% some_values) {
+	print("Yup")
+}
+
+test_values %in% some_values
+
+```
+
+
+## Loops and apply
+
+### Loops
+
+Many times when programming, a task, or set of tasks, need to be done over and over again on lots of things.  For instance lets say that you have a data frame and want to calcluate the mean of each column.
+
+```{r}
+df = data.frame(x = rnorm(50), y = rnorm(50), z = rnorm(50))
+head(df)
+```
+
+It could be done individually:
+```{r}
+mean(df$x)
+mean(df$y)
+mean(df$z)
+```
+
+But this gets tedious for many columns and it's easy to make mistakes.  Loops are a good choice here.
+
+```{r}
+output = vector("double", ncol(df))
+
+for (i in seq_along(df)) {
+	output[[i]] = mean(df[[i]])
+}
+
+output
+```
+
+#### Break it down:
+
+First predefine our output.  Do this when you can as it speeds up loops in R significantly.
+
+```{r, eval = FALSE}
+output = vector("double", ncol(df))
+```
+
+Next we need something to loop over, something that changes with each turn of the loop. `seq_along()` does the trick here, but this can really be anything
+```{r}
+seq_along(df)
+
+# equivalently
+1:ncol(df)
+
+1:3
+
+```
+
+Now we have the variable `i` which changes each pass of the loop.  We can use this to calculate the mean of each column using what we learned about subsetting.
+```{r, eval = FALSE}
+output[[i]] = mean(df[[i]])
+```
+
+Bonus: Why do we have to use `[[` here?
+
+#### Some notes on loops
+
+* The code that you want to be evaluated in the loop must be between the curly brackes `{}`.
+* A more general loop, the `while` loop can also be used but is not often seen in R code.
+* In R, looping over very large objects, for example a data frame with a million rows, can be very slow, especially if you don't predefine your output.
+* For this reason, in many cases it is usually more efficient and often cleaner to use an `apply` function.
+

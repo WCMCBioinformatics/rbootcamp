@@ -1,0 +1,53 @@
+---
+title: "Programming Concepts"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+---- 
+
+R is a programming language and in order to use it effectivly it is important to understand some basic programming concepts. 
+
+
+## Functions
+
+* A function is a small bit of code designed to perform a single task over and over.  Given a set of inputs a well designed function takes those, performs a pre-defined, single task and returns some type of output.  
+
+* Functions are first-class citizens in R.  They are used extensively, can be passed as parameters to other functions and functions can return other functions as output.
+
+* Most functions you use will be either base R functions (functions that are a part of the core R language) or functions defined by external packages.  However, defining your own functions in R is very easy and can be very helpful to reduce repetition and mistakes in your analysis.
+
+## Conditionals
+
+* Programming is often about making choices; if this then that.  This is how we can control the program flow based on things like user input, features of our data, or the output of another function or program.
+
+* There are a number of ways to control program flow in R but the most common is an if/else statment so we'll be focusing on that one.
+
+## Logical operators
+
+We use logical operators in many places but they are key component in program control flow, i.e. if/else and loops.  They always return TRUE or FALSE
+
+Operator | Description
+-------- | -----------
+<				 | less than
+<=       | less than or equal to
+>        | greater than
+>=       | greather than or equal to
+==       | exactly equal to
+!=       | not equal to
+!x       | not x
+x | y    | x OR y
+x & y    | x AND y
+isTRUE(x)| test if x is TRUE
+
+
+## Loops and apply
+
+Loops are used in to repeat a task many times.  This could be doing the same thing to every item in a vector, or every column or row in a data frame.  Or it could be performing the same analysis on multiple datasets.  Loops and apply functions, which are really just optimized loops, allow us to reduce reduncancy, effort and error.
+
+Loops get a bad rap in R and for certain tasks are very slow, however, many slow loops can be avoided with some simple knowledge of how R works.
+
+Apply functions allow us to 'apply' a function to every row, column, item, etc., in a vector, matrix, or data frame.  They are confusing to beginners but very powerful.  In particular they can be very useful for lists.  
+

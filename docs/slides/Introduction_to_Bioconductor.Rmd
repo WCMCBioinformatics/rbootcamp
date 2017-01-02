@@ -1,0 +1,104 @@
+---
+title: "Introduction to Bioconductor"
+---
+
+```{r, message=FALSE, echo=FALSE}
+library(knitr)
+opts_chunk$set(collapse = FALSE)
+```
+
+
+
+## Bioconductor
+
+**What can you do with it?**
+
+-----
+
+### Sequence analysis
+
+- fasta, fastq, BAM, gff, bed, wig, VCF
+- trim, transform, align
+- quality control
+- RNA-seq, CHIP-seq, differential expression
+
+------  
+
+### Access data
+
+- Sequence Read Archive, GEO, Biomart, Kegg, Reactome, NBCI, etc
+- Annotation data for most model organisms
+
+------  
+
+### Other  
+
+- flow cytometry, mass spec, proteomics, image analysis
+
+-----  
+
+### Getting help
+
+
+-----
+
+### Installing packages
+
+- Bioclite
+- Biconductor versions
+- How to figure out what you need
+
+----
+
+## Example Packages
+
+-----
+
+### Sequences
+
+- Biostrings: fasta sequences  
+- ShortRead: fastq sequences  
+- BAM files: Rsamtools, GenomicRanges, GenomicAlignments  
+
+
+----- 
+
+### RNA-seq
+
+- DESeq
+- edgeR  
+- limma
+
+
+-----
+
+### Functional analysis
+
+- clusterProfiler
+- goseq
+- GOstats
+- SPIA
+
+-----
+
+### Annotations and Genomes
+
+- microarray probes
+- genome sequences
+- loads of other annotations
+- Biomart
+
+----
+
+### Getting public data
+
+- Biomart: ensemble
+- Reactome.db
+- KEGGREST
+- GEOmetadb
+- GEOquery
+- SRAdb
+
+
+
+

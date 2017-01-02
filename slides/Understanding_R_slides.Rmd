@@ -1,0 +1,491 @@
+---
+title: "Understanding R"
+---
+
+```{r, message=FALSE, echo=FALSE}
+knitr::opts_chunk$set(collapse = FALSE)
+```
+
+# Using RStudio
+
+## RStudio demo
+
+To help us code efficiently and reproducibly we'll be using an integrated development environment (IDE) called [RStudio](https://www.rstudio.com/products/RStudio/). 
+
+* R and R Studio installed and working
+* Using the file pane and setting your working directory
+* Running code - console and from scripts and rmarkdown documents
+* Using the Environments pane
+
+
+# R History
+
+## What is R?  
+
+R is calculator
+```
+2 + 2
+```
+
+## NO!! 
+
+R is a programming languange.  Specifically it's a programming language built for statistics.  
+
+And that's what it's best at.
+
+---  
+
+* R is a dialect of the S languange which was developed by John Chambers at Bell Labs in 1976 and still exists today although hasn't changed much since 1998.  
+* The philosopy behind S (and R) was to allow users to begin in an interactive enviroment that didn't explicitly feel like programming.  
+* As their needs and skills grew they could move into more of the programming aspects.  This helps us understand some of why R is the way it is.
+
+----  
+ 
+* R began life in New Zealand, developed by Ross Ihaka and Robert Gentleman in 1991.  
+* It was made available to the public in 1993 and in 1995 R was licensed with the GNU General Public License, making it free and open-source.  
+* Version 1.0.0 was released in 2000 and the most recent version, 3.3.1 was released on June 21.
+
+
+## Some key features of R
+
+* R runs on almost all platforms and operating systems.  
+* It's free
+* The core is quite lean - most funcionality is found in modular packages.
+* Very powerful graphics and statistics capabilities
+* Actively developed and a very active user community
+* Rich and robust package repository (CRAN and Bioconductor)
+* Excellent interactive capabilities - good for rapid development and data analysis
+
+# Packages
+
+----  
+
+* Packages are simply bits of code, external to the core R code that are designed to perform a specific function.  
+* The vast majority of the usefulness and functionality of R resides in packages.  
+* These packages live in online repositories and can be installed on your own system to be used.  
+
+----  
+
+* R has a well defined system of packages, requiring package authors to document well and test installation thouroughly.  
+* This means that *most* packages will install easily on any system.  
+* For most R packages the central repository is CRAN (The Comprehensive R Archive Network), however, most bioinformatic packages live in another repository called Biocondcutor.  
+* Dispite differences in content and appearances, these essentially function in the same way.
+
+## Installing packages
+
+* Packages need only be installed once, although you may have to reinstall when upgrading R or when you want to use a newer version of a package.
+
+* To install from CRAN all one needs to do is:
+```
+install.packages("dplyr")
+```
+
+* If you're not using RStudio then you may be asked to select a mirror.  Just choose the location geographically closest to you.  
+
+* Bioconductor is slightly different - we'll cover that in more detail in a later session.
+
+## Using packages
+
+Once installed all the functions in a package are available to be used.
+
+```{r}
+dplyr::glimpse(iris)
+```
+
+Here the name of the package is provide followed by two colons and then the name of the function you want to use.  The `::` loads the package into memory and allows you to access all of the functions. 
+
+----  
+
+* However, this can get tedious typing out the package name everytime so R provides a function `library()` used to attach packages.  
+* The library function first loads then "attaches" the package.  
+* Basically this means you can now use functions from a package without typing the package names.  
+* Packages are attached in your current session and need to be attached every time you start a new session. 
+* Technically what is happening here is that when attaching a package R puts those functions in your search path, the place R looks first for objects and functions.
+
+----  
+
+```{r}
+search()
+```
+
+----  
+
+```{r}
+library("dplyr")
+search()
+```
+
+----  
+
+```{r}
+glimpse(iris)
+```
+
+----  
+
+* There is some confusion on why they are called packages but you used the `library()` function to attach them. 
+* The correct terminology here is that individual packages are stored in your 'library'.  
+* You use the `library()` function to load and attach a package *from* your library.
+
+## Namespaces
+
+An important concept to be aware of when using packages is namespaces.  
+
+* Given the thousands of packages available it is quite likely that function names will overlap.  
+* If two functions have the same name and both are attached, R will by default use the one attached most recently.  
+* You can see this by looking at the order of the packages in the search path `search()` function.
+
+----  
+
+To avoid problems and bizzare errors you can specify which function to use by using the `::` notation as before to explicity indicate which function you'd like to use.
+
+---- 
+
+### Pro tip
+
+If your getting strange errors from a function that previously worked fine try typing 
+
+```
+?function_name
+```  
+
+In RStudio if there are multiple functions attached with the same name then the help window will give you links for both functions and the one at the top of the list is the one R uses by default.
+
+
+
+# Environments
+
+---- 
+
+What is an environment?  This is a topic for an entire workshop in and of itself, however it is important to have a basic understanding of environments.
+
+----  
+
+* Environments are how R knows where to look for things. 
+* The only environment that you *usually* have to pay attention to is `.GlobalEnv`, your working environment. 
+* When you define an object `z = 50`, this object, `z` now lives in the global environment.  
+* When you ask R to do something with the object `z`, say `print(z)`, then R begins to look for object `z` in the global environment.  
+* If it can't find it there then it searches other places it knows like attached packages.  
+* For example if `z` happened to be a function in a package called `alphabet` and that package had been attached (`library(alphabet)`), then R would find `z` there.
+
+----  
+
+Environments are important to understand even when you are starting out because they can be the source of hard to find but devestating mistakes.  
+
+__Know what is in your environment!__   
+
+RStudio has a very useful panel called `Environment` that tells you exactly what is in your global environment.  The function `ls()` also lists the objects in your global environment.
+
+---- 
+
+Here's the kicker - you can define objects of any name in your global environment.  Here's something you should never do. Best not to run this code in your own session.
+
+```{r, collapse=TRUE}
+5 + 5 
+```
+```{r, collapse=TRUE}
+`+` = function(x,y) {
+ 	return(x*y)
+}
+5 + 5
+```
+```{r, collapse=TRUE}
+ls()
+```
+```{r, collapse=TRUE}
+rm("+")
+5 + 5
+```
+
+---- 
+
+Why does this work?  
+
+*Hint: Think about where R looks first to find objects.*
+
+---- 
+
+Some tips:
+
+* Always start your analysis in a new environment
+* Never save your workspace (R asks you about this when quitting, always say no)
+* Don't analyze different projects in the same environment.
+* If you have an error try re-running your script in a new session (fresh environment)
+* On the flipside, make sure your script can run in a new session.
+* Use unique names for your objects
+
+
+# Assignment
+
+---- 
+
+A quick note here on two different assignment operators used in R.  Historically R has used `<-` for assignment.
+```{r}
+x <- 5
+x
+```
+
+----  
+
+However, in this course so far you've seen me using `=` for assignment.
+```{r}
+x = 5
+x
+```
+
+---- 
+
+Both are equally valid, despite what you may read otherwise.  Each has a couple of quirks to be aware of but these are very minor.  
+
+
+Decide which one you prefer and be consistent.
+
+## Using `<-`
+
+* Longer to type (two key strokes, plus SHIFT)
+* Can make mistakes like this:
+```
+x< -5
+```
+* Your code will look more like the majority of what's out there.
+
+## Using `=`
+
+* Quicker to type
+* Similar to modern programming lanugages
+* Also used for passing parameters in functions `rnorm(n = 10)`
+* Difference between `=` and `==` can be confusing to start
+
+----
+
+Decide for yourself, be consistent and whichever you choose make sure to surround it in spaces.
+
+```{r}
+# Good
+x = 5 
+y <- 4
+
+# Bad
+x=5
+y<-4
+```
+
+
+# Other important key R functions 
+
+## Generating and manipulating sequences
+
+---- 
+
+```{r, collapse=TRUE}
+seq(1,10)
+
+seq(1, 20, by = 2)
+
+seq(from = 2, by = 2.5, length.out = 10)
+```
+
+
+```{r, collapse=TRUE}
+rep(2, 3)
+
+rep(1:3, 4)
+
+rep(1:3, each = 2)
+
+rep(c("A", "B", "C"), each = 6)
+
+```
+
+## Distributions  
+
+---- 
+
+```{r}
+normal_dist = rnorm(n = 1e6, mean = 2, sd = 1.2)
+hist(normal_dist, main = "A normal distribution")
+```
+
+---- 
+
+```{r}
+uniform_dist = runif(n = 1e6, min = 10, max = 20)
+hist(uniform_dist, main = "A uniform distribution")
+```
+
+## Basic statistics
+
+----
+
+```{r, collapse=TRUE}
+set.seed(3823)
+x = sample(1:1000, size = 50, replace = TRUE)
+```
+
+```{r, collapse=TRUE}
+max(x)
+
+min(x)
+
+range(x)
+
+mean(x)
+
+median(x)
+
+sum(x)
+
+sd(x)
+
+```
+
+---- 
+
+```{r, collapse=TRUE}
+y = rnorm(x, 1, 0.2 * x) + x
+plot(x,y)
+```
+
+---- 
+
+```{r,collapse=TRUE}
+var(x)
+
+cor(x,y)
+
+```
+
+---- 
+
+### Simple linear model
+
+```{r}
+my_model = lm(y ~ x)
+print(my_model)
+```
+
+---- 
+
+```{r}
+summary(my_model)
+```
+
+----
+
+```{r}
+plot(x, y, main = "Linear model")
+abline(my_model, col = "red")
+```
+ 
+ 
+# Where to get help
+
+## Built-in help
+
+R-package authors are required to document their functions although this happens at a various levels of usefulness.  
+
+---- 
+
+* Simply type `?function_name` to get help on a function. 
+* Type `??function` to do a fuzzy search.  
+* Look carefully what parameters the function requires and what type they are.  
+* Some are required (listed first, no default) and some are optional (a default value is usually listed).  
+* Most function help will also indicate what the function returns.  
+* Good documentation also has more information on what the function is doing.
+* Package manuals (required for both CRAN and Bioconductor) are all of these function help pages gathered together in one place.
+
+## Vignettes
+
+* Vignettes (required for Bioconductor packages, but not CRAN) are longer form documentation usually in the form of a tutorial or example usage.  
+* These can be extremely helpful and are usually the best place to start when working with a new package.  
+* For example the limma (linear models for microarrays) vignette is a small book and an excellent resource on learning how to analyze microarrays (and RNA-seq).  
+* Vignettes can be found by typing `browseVignettes("packageName")` in your console or on the Bioconductor web page for a package. 
+
+## Elsewhere
+
+* Sometimes authors will provide more detailed documentation online.  
+* This is more common for more recent packages where the authors may have a github repository and associated webpage.  
+* Often discussion pages (Google groups, Github) can also be a useful source of help
+
+# Errors
+
+## __GOOGLE IT!!!__
+
+If you email me with an error I haven't seen, the first thing I will do is Google it.  If you go ahead and post a question on a forum when an easy answer can be found by googling don't be surprised for an unpleasant response.
+
+---- 
+
+But sometimes an easy answer can't be found so here's a quick process to walk through:
+
+1.  Re-read the error and then think about it for a minute.  See if you can't get a grasp on what's really going wrong.
+2.  Check your code for errors.  Spelling errors, misplaced commas, forgotten parenthesis can all cause problems
+3.  Look it up - I very, very rarely get an error that someone else hasn't seen before.
+4.  If you still can't find a solution then you can ask for help.  Make friends in this class - get an R buddy.  I can answer brief questions or you can post questions online at Stack Overflow.  Sometimes package developers have specific discussion groups on Google groups or Github.  These can be very useful.
+
+---- 
+
+To get you started here are few of the more common errors you might see:
+
+*Think about what is going wrong for each of these.*
+
+----
+
+```{r, error=TRUE}
+my_object
+```
+  
+Hint: Type `ls()`
+
+----  
+```{r, error=TRUE}
+iris[, 6]
+```
+
+Hint:  How many columns does the `iris` data frame have?
+
+---- 
+```{r, error=TRUE}
+sample[1:10,]
+```
+
+Hint:  What does `typeof(sample)` give you? What about `sample(10)`?  Or `?sample`
+
+----  
+```{r, error=TRUE}
+mat[4, 2]
+```
+
+Hint: What are the dimensions (`dim()`) of `mat`?
+
+---- 
+```{r, error=TRUE}
+pet_a_cat()
+```
+
+Hint:  This one is pretty self-explanatory
+
+----
+```{r, error=TRUE}
+nothing = NA
+if (nothing == NA) {
+	print("empty")
+}
+```
+
+Hint:  What does `nothing == NA` give you?  How about `is.na(nothing)`?
+
+---- 
+```{r, error=TRUE}
+my_data = read.table("mydata.txt")
+```
+
+Hint: Read the error message carefully.
+
+----
+```{r, error=TRUE}
+x = data.frame(y = NULL)
+x$y = 1:4
+```
+
+Hint: How many rows does `x` have?
+
