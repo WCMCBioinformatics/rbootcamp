@@ -1,0 +1,96 @@
+---
+title: "PCA"
+---
+
+```{r, message=FALSE, echo=FALSE}
+library(knitr)
+opts_chunk$set(collapse = TRUE, message = FALSE, results = 'hide')
+options("readr.num_columns" = 0)
+```
+
+
+```{r}
+library("dplyr")
+library("tidyr")
+library("readr")
+```
+
+
+## PCA
+
+### Getting the data ready
+```{r}
+# load the full dataset
+pa_full = read_csv("../datasets/pa_phenotype_data.csv") %>% 
+	mutate(Strain_ID = as.character(Strain_ID))
+
+# select the columns we want and convert to a matrix in one step
+pa_mat = pa_full %>% 
+	select(C12_HSL, C4_HSL, Protease, Pyochelin, Pyoverdin, Swim, LB, M9glu, M9gly, SCFM) %>% 
+	as.matrix()
+
+# and we need some rownames
+rownames(pa_mat) = pa_full$Strain_ID
+
+# the basic PCA we're using can't handle missing values
+pa_mat = na.omit(pa_mat)
+```
+
+### Do the PCA
+```{r}
+# run pca
+pca = princomp(pa_mat)
+
+# look at our results with basic built in plots
+biplot(pca)
+
+# hmmm, that doesn't look right, we must have forgotten to scale
+# we want to scale rows so need to transpose and then transpose back for pca
+pa_mat = t(scale(t(pa_mat)))
+
+# try again
+pca = princomp(pa_mat)
+biplot(pca)
+```
+
+### A nicer plot
+
+The base plot is not very nice, let's learn how to extract the info we want and make our own much nicer looking plot
+
+#### Step 1: Extract the scores
+```{r}
+# pull them out of the pca object
+scores = pca$scores
+
+# we only want the first two principal components for plotting and let's rename them
+scores = as.data.frame(scores[, 1:2])
+colnames(scores) = c("PC1", "PC2")
+
+# and finally we need to put the rownames back in because this is the StrainID
+scores = scores %>% 
+	tibble::rownames_to_column("Strain_ID")
+```
+
+#### Step 2: Combine back with original data
+
+Here we'll use a join operation which will automatically find shared variable and join the two tables based on this variable.  In this case we'll use a left join so that any strains that are in the full set but not in the set we used for PCA are left out.
+
+```{r}
+pca_results = scores %>% left_join(pa_full)
+```
+
+#### Step 3: Make the plot
+
+```{r}
+pca_plot = pca_results %>% 
+	ggplot(aes(x = PC1, y = PC2)) +
+		geom_point(aes(colour = Clinical_Status)) +
+	  theme_bw() +
+	  scale_color_brewer(palette = "Set1")
+pca_plot
+```
+
+
+
+
+

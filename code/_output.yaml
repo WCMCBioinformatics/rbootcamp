@@ -1,5 +1,0 @@
-  html_document:
-    theme: lumen
-    toc: true
-    toc_float: 
-     collapsed: false

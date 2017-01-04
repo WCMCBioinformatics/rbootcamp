@@ -72,7 +72,7 @@ Secondary reading:
 * Ways to subset
 * Subsetting operators
 
-### Programming Concepts]
+### Programming Concepts
 
 * Functions
 * Conditionals

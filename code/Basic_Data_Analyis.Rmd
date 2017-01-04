@@ -1,5 +1,5 @@
 ---
-title: "dplyr Practical"
+title: "Basic Data Analysis"
 ---
 
 ```{r, message=FALSE, echo=FALSE}
@@ -209,6 +209,8 @@ pa %>%
 	mutate(difference = Exacerbation - `Clinically Stable`) %>% 
 	mutate(Pos_or_neg = if_else(sign(difference) == -1, "-", "+"))
 ```
+
+
 
 
 
